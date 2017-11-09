@@ -2,14 +2,37 @@
 <html>
   <head>
     <title>Event Finding and Sharing - S'up</title>
+
+    <script src="js/index.js"></script>
   </head>
   <body>
+
+		<script>
+			window.fbAsyncInit = function() {
+				FB.init({
+					appId      : '507641596259132',
+					xfbml      : true,
+					version    : 'v2.11'
+				});
+				FB.AppEvents.logPageView();
+			};
+
+			(function(d, s, id){
+				 var js, fjs = d.getElementsByTagName(s)[0];
+				 if (d.getElementById(id)) {return;}
+				 js = d.createElement(s); js.id = id;
+				 js.src = "https://connect.facebook.net/en_US/sdk.js";
+				 fjs.parentNode.insertBefore(js, fjs);
+			 }(document, 'script', 'facebook-jssdk'));
+		</script>
+
     <header>
       <div class="hero">
         <h1>S'up</h1>
         <h2>What's Happening Around You?</h2>
       </div>
     </header>
+
     <section class="main">
       <aside>
         <h3>Find Things to Do</h3>
@@ -24,8 +47,18 @@
         <a href="#">Share</a>
       </aside>
     </section>
+
+    <section class="login">
+      <div class="fb-login-button" data-max-rows="1" data-size="large"
+        data-button-type="continue_with" data-show-faces="false"
+        data-auto-logout-link="false" data-use-continue-as="false"
+				onlogin="checkLoginState();">
+      </div>
+    </section>
+
     <footer>
       &copy; Mickey Chao
     </footer>
   </body>
+
 </html>
