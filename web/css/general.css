@@ -1,0 +1,19 @@
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(0,0,0,.30);
+  padding: 75px 0 0 0;
+  z-index: 9999;
+}
+
+nav a.logo {
+  position: absolute;
+  display: block;
+  width: 128px;
+  height: 96px;
+  background: url(../images/logo.png) no-repeat 0 0;
+  top: 0px;
+  left: 0px;
+}

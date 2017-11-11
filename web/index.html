@@ -2,8 +2,9 @@
 <html>
   <head>
     <title>Event Finding and Sharing - S'up</title>
-
+    <link rel="stylesheet" type="text/css" media="screen" href="css/index.css">
     <script src="js/index.js"></script>
+    <script src="https://www.w3schools.com/lib/w3.js"></script>
   </head>
   <body>
 
@@ -27,6 +28,7 @@
 		</script>
 
     <header>
+      <div w3-include-html="nav.html"></div>
       <div class="hero">
         <h1>S'up</h1>
         <h2>What's Happening Around You?</h2>
@@ -60,5 +62,8 @@
       &copy; Mickey Chao
     </footer>
   </body>
+  <script>
+    w3.includeHTML();
+  </script>
 
 </html>
