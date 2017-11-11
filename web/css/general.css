@@ -1,9 +1,30 @@
+body {
+  font-size: 16px;
+}
+
+a.btn {
+  font-size: 1.2em;
+  text-decoration: none;
+  background-color: #a9a9a9;
+  border: 1px solid #a9a9a9;
+  padding: 7px 15px;
+  transition: background-color .5s;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  box-shadow: 2px 2px 2px #888888;
+}
+
+a.btn:hover {
+  background-color: rgba(0,0,0,0.3);
+}
+
 nav {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  background-color: rgba(0,0,0,.30);
+  background-color: rgba(247,183,51,.60);
   padding: 75px 0 0 0;
   z-index: 9999;
 }

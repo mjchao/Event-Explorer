@@ -11,3 +11,56 @@ header div.hero {
   top: 80px;
   left: 40%;
 }
+
+section.main {
+  position: relative;
+  background-color: #fc4a1a;
+  margin-bottom: 30px;
+  padding-bottom: 5em;
+}
+
+section.main aside {
+  width: 50%;
+  float: left;
+  text-align: center;
+  display: table-cell;
+}
+
+section.main .content {
+  margin: 0 50px 0px 50px;
+  height: 100%;
+  position: relative;
+  text-align: center;
+}
+
+section.main .content p {
+  text-align: left;
+}
+
+section.main .content .btn {
+  position: absolute;
+  bottom: 0;
+}
+
+/* this is better than using table and table-cell displays to get same-height
+columns. But Safari does not support flex, so we have to make this check.*/
+@supports (display: flex) {
+  section.main {
+    display: flex;
+  }
+
+  section.main aside {
+    flex: 1;
+  }
+}
+
+@supports not(display: flex) {
+  section.main {
+    display: table;
+  }
+
+  section.main aside {
+    display: table-cell;
+  }
+}
+
