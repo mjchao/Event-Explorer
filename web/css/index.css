@@ -1,7 +1,8 @@
 @import url(general.css);
 
 header {
-  height: 430px;
+  height: 550px;
+  top: 65px; 
   position: relative;
 }
 
@@ -14,9 +15,11 @@ header div.hero {
 
 section.main {
   position: relative;
-  background-color: #fc4a1a;
   margin-bottom: 30px;
   padding-bottom: 5em;
+  width: 101.75%;
+  left: -1%;
+  background-color: #c2cad0;
 }
 
 section.main aside {

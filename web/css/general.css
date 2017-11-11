@@ -1,22 +1,23 @@
 body {
   font-size: 16px;
+  background-color: #afd275;
 }
 
 a.btn {
   font-size: 1.2em;
   text-decoration: none;
-  background-color: #a9a9a9;
-  border: 1px solid #a9a9a9;
+  background-color: #dfdce3;
+  border: 1px solid #dfdce3;
   padding: 7px 15px;
   transition: background-color .5s;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
   border-radius: 5px;
-  box-shadow: 2px 2px 2px #888888;
+  box-shadow: 2px 2px 2px #f7b733;
 }
 
 a.btn:hover {
-  background-color: rgba(0,0,0,0.3);
+  background-color: rgba(0,0,0,0.2);
 }
 
 nav {
