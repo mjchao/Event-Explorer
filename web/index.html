@@ -3,7 +3,7 @@
   <head>
     <title>Event Finding and Sharing - S'up</title>
     <link rel="stylesheet" type="text/css" media="screen" href="css/index.css">
-    <script src="js/index.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://www.w3schools.com/lib/w3.js"></script>
   </head>
   <body>
@@ -44,7 +44,9 @@
             are up to. Traveling somewhere? Plan ahead and see what's happening
             around your destination.</p>
           <br/><br/><br/>
-          <a class="btn" title="Explore" href="#">Explore</a>
+          <a class="btn" title="Explore" href="#" onclick="onExploreClicked()">
+            Explore
+          </a>
         </div>
       </aside>
       <aside>
@@ -55,7 +57,9 @@
             creepy strangers showing up - easily restrict who will see your
             event.</p>
           <br/><br/><br/>
-          <a class="btn" title="Share" href="#">Share</a>
+          <a class="btn" title="Share" href="#" onclick="onShareClicked()"
+            >Share
+          </a>
         </div>
       </aside>
     </section>
@@ -67,5 +71,6 @@
   <script>
     w3.includeHTML();
   </script>
+  <script src="js/index.js"></script>
 
 </html>
