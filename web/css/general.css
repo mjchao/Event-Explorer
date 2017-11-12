@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Luckiest+Guy|Open+Sans:400,700|Merriweather');
+@import url(login.css);
 
 body {
   font-size: 16px;
@@ -49,7 +50,7 @@ nav {
   width: 100%;
   background-color: rgba(247,183,51,.60);
   padding: 75px 0 0 0;
-  z-index: 9999;
+  z-index: 9998;
 }
 
 nav a.logo {
