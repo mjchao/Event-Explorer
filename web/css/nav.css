@@ -1,0 +1,48 @@
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(247,183,51,.60);
+  padding: 75px 0 0 0;
+  /* z-index needs to be less than login panel's z-index */
+  z-index: 9998;
+}
+
+nav a.logo {
+  position: absolute;
+  display: block;
+  width: 76px;
+  height: 64px;
+  background: url(../images/logo.png) no-repeat 0 0;
+  top: 5px;
+  left: 5px;
+}
+
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 17px;
+  left: 110px;
+  width: 100%;
+}
+
+nav ul li:hover {
+  background-color: rgba(0,0,0,.40);
+}
+
+nav > ul > li {
+  float: left;
+  width: 25%;
+}
+
+nav ul li a {
+  display: inline-block;
+  color: #fff;
+  padding: 10px 20px;
+  text-decoration: none;
+  position: relative;
+  width: 100%;
+}
