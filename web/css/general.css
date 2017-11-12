@@ -33,9 +33,9 @@ nav {
 nav a.logo {
   position: absolute;
   display: block;
-  width: 128px;
-  height: 96px;
+  width: 76px;
+  height: 64px;
   background: url(../images/logo.png) no-repeat 0 0;
-  top: 0px;
-  left: 0px;
+  top: 5px;
+  left: 5px;
 }
