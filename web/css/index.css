@@ -1,22 +1,28 @@
 @import url(general.css);
 
 header {
-  height: 550px;
-  top: 65px; 
+  height: 450px;
   position: relative;
+  margin-bottom: 50px;
+  background: url(../images/banner.png) no-repeat bottom center;
 }
 
 header div.hero {
   position: absolute;
-  width: 50%;
-  top: 80px;
-  left: 40%;
+  width: 100%;
+  top: 60px;
+  text-align: center;
+}
+
+header div.hero h2 {
+  position: relative;
+  top: -20px;
 }
 
 section.main {
   position: relative;
   margin-bottom: 30px;
-  padding-bottom: 5em;
+  padding-bottom: 2em;
   width: 101.75%;
   left: -1%;
   background-color: #c2cad0;
@@ -24,13 +30,14 @@ section.main {
 
 section.main aside {
   width: 50%;
+  left: 50px;
   float: left;
   text-align: center;
   display: table-cell;
 }
 
 section.main .content {
-  margin: 0 50px 0px 50px;
+  margin: 0 50px 0 50px;
   height: 100%;
   position: relative;
   text-align: center;
@@ -42,7 +49,7 @@ section.main .content p {
 
 section.main .content .btn {
   position: absolute;
-  bottom: 0;
+  bottom: 1em;
 }
 
 /* this is better than using table and table-cell displays to get same-height
