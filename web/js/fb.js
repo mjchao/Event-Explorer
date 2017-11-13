@@ -57,7 +57,7 @@ class FbManager {
    */
   getUserEvents(callback) {
     FB.api(
-      this.apiPrefix + "/events?access_token=" + this.fbToken.accessToken,
+      "/me/events",
       "get",
       {
         "access_token": this.fbToken.accessToken,
