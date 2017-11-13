@@ -7,26 +7,6 @@
     <script src="https://www.w3schools.com/lib/w3.js"></script>
   </head>
   <body>
-
-		<script>
-			window.fbAsyncInit = function() {
-				FB.init({
-					appId      : '507641596259132',
-					xfbml      : true,
-					version    : 'v2.11'
-				});
-				FB.AppEvents.logPageView();
-			};
-
-			(function(d, s, id){
-				 var js, fjs = d.getElementsByTagName(s)[0];
-				 if (d.getElementById(id)) {return;}
-				 js = d.createElement(s); js.id = id;
-				 js.src = "https://connect.facebook.net/en_US/sdk.js";
-				 fjs.parentNode.insertBefore(js, fjs);
-			 }(document, 'script', 'facebook-jssdk'));
-		</script>
-
     <div w3-include-html="login.html"></div>
     <header>
       <div w3-include-html="nav.html"></div>
@@ -71,6 +51,6 @@
   <script>
     w3.includeHTML();
   </script>
+  <script src="js/fb.js"></script>
   <script src="js/index.js"></script>
-
 </html>

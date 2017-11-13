@@ -1,12 +1,12 @@
 <section class="login hidden">
   <div class="login-panel">
-    <span class="close-login" onclick="LOGIN.hideLoginInterface()">
+    <span class="close-login" onclick="LOGIN_MGR.hideLoginInterface()">
       &#x00d7;
     </span>
     <div class="fb-login-button" data-max-rows="1" data-size="large"
       data-button-type="continue_with" data-show-faces="false"
       data-auto-logout-link="false" data-use-continue-as="false"
-      onlogin="checkLoginState();">
+      onlogin="LOGIN_MGR.onFbLogin();">
     </div>
   </div>
   </center>

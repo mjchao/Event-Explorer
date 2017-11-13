@@ -1,11 +1,11 @@
 "use strict";
 
 function onExploreClicked() {
-  LOGIN.requestLogin("explore.html");
+  LOGIN_MGR.requestLogin("explore.html");
   return false;
 }
 
 function onShareClicked() {
-  LOGIN.requestLogin("share.html");
+  LOGIN_MGR.requestLogin("share.html");
   return false;
 }

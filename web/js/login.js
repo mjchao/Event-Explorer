@@ -14,7 +14,7 @@ class LoginManager {
    * @return {bool} If the user is logged in.
    */
   isLoggedIn() {
-    return false;
+    return FB_MGR.isLoggedIn();
   }
 
   /**
@@ -39,11 +39,11 @@ class LoginManager {
    *    as undefined if no redirect needed.
    */
   requestLogin(redirect) {
+    this.loginRedirect_ = redirect;
     if (!this.isLoggedIn()) {
       this.showLoginInterface();
     }
     else {
-      this.loginRedirect_ = redirect;
       this.redirectOnLogin();
     }
   }
@@ -53,12 +53,21 @@ class LoginManager {
    */
   redirectOnLogin() {
     if (this.loginRedirect_ !== undefined) {
-      window.location.redirect(this.loginRedirect_);
+      window.location.href = this.loginRedirect_;
     }
-    this.loginRedirect_ = undefined;
+  }
+
+  /**
+   * Redirects to the user's destination page if login was successful.
+   */
+  onFbLogin() {
+    FB.getLoginStatus(function(response) {
+      if (response.status == "connected") {
+        LOGIN_MGR.redirectOnLogin(response);
+        FB_MGR.useAuthToken(response.authResponse);
+      }
+    });
   }
 }
 
-var LOGIN = new LoginManager();
-console.log("Login imported");
-
+var LOGIN_MGR = new LoginManager();
