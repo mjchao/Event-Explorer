@@ -25,7 +25,10 @@ class FbManager {
   constructor() {
     // The user's login token. It's okay if it's null. null just means the user
     // is not yet logged in.
-    this.fbToken = window.localStorage.getItem("fbToken");
+    this.fbToken = JSON.parse(window.localStorage.getItem("fbToken"));
+    if (this.fbToken !== null) {
+      this.useAuthToken(this.fbToken);
+    }
   }
 
   /**
@@ -34,8 +37,9 @@ class FbManager {
    * @param {object} tokenData The OAuth token data.
    */
   useAuthToken(tokenData) {
-    window.localStorage.setItem("fbToken", tokenData);
+    window.localStorage.setItem("fbToken", JSON.stringify(tokenData));
     this.fbToken = tokenData;
+    this.apiPrefix = "/" + this.fbToken.userID;
   }
 
   /**
@@ -43,6 +47,26 @@ class FbManager {
    */
   isLoggedIn() {
     return this.fbToken !== null;
+  }
+
+  /**
+   * Gets the user's created events for sharing.
+   *
+   * @param {function} Callback that will receive the events when they are
+   *    received from Facebook.
+   */
+  getUserEvents(callback) {
+    FB.api(
+      this.apiPrefix + "/events?access_token=" + this.fbToken.accessToken,
+      "get",
+      {
+        "access_token": this.fbToken.accessToken,
+        "type:": "created"
+      },
+      function (response) {
+        console.log(response);
+      }
+    );
   }
 }
 
