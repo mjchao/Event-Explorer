@@ -60,7 +60,7 @@ class FbManager {
    * @return {bool} If the user is logged into facebook already.
    */
   isLoggedIn() {
-    return this.fbToken !== null;
+    return this.fbToken !== null && this.fbToken.expiresIn > 0;
   }
 
   /**
