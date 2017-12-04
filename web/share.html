@@ -20,12 +20,21 @@
           </a>
         </div>
 
-        Who can see your event?<br>
-        <div class="combo-select">
-          <select>
-            <option value="Anyone">Anyone</option>
-            <option value="Group">Anyone belonging to this group</option>
-          </select>
+        Who can see your event?
+        <button type="button" class="btn"
+          onclick="SHARE_MGR.addRestrictionSelector()">
+          +
+        </button>
+        <br>
+
+        <div class="restrictions-list">
+          <div class="select-restriction">
+            <select>
+              <option value="Anyone">Anyone</option>
+              <option value="Group">Anyone belonging to this group</option>
+            </select>
+          </div>
+          <button type="-" class="btn">-</button>
         </div>
 
         <input type="submit" value="Share">

@@ -2,11 +2,118 @@
 
 $.getScript("js/fb.js");
 
+/**
+ * Manages interactions with one dropdown box for selecting a restriction
+ * on who can see the event.
+ */
+class RestrictionSelector {
+
+  constructor() {
+
+    // "OR" text that is displayed between restrictions to indicate that
+    // restrictions are "OR" - not "AND"
+    this.orText_ = $("<h3>",
+      {
+        "text": "OR"
+      }
+    )[0];
+
+    // Outer div containing everything.
+    this.selectorContainer_ = $("<div>",
+      {
+        "class": "select-restriction"
+      }
+    )[0];
+
+    // Groups the individual options that the user can pick from.
+    this.selectorGroup_ = $("<select>")[0];
+    this.selectorContainer_.appendChild(this.selectorGroup_);
+
+    // List containing all the individual options the user can pick from.
+    this.restrictOptions_ = []
+    for (var i = 0; i < RestrictionSelector.RESTRICTIONS.length; ++i) {
+      var newOption = $("<option>",
+        {
+          "text": RestrictionSelector.RESTRICTIONS[i]
+        }
+      )[0];
+      this.restrictOptions_.push(newOption);
+      this.selectorGroup_.appendChild(newOption);
+    }
+
+    var _this = this;
+
+    // Button for removing the restriction
+    this.removeButton_ = $("<button>",
+      {
+        "class": "remove-restriction",
+        "text": "-",
+        "href": "#",
+        "click":
+          // Javascript gets pretty messed up when trying to add an onClick
+          // callback. "this" becomes the button itself, so we need to
+          // pass in a reference to the actual RestrictionSelector object.
+          (function(_this) {
+            return function() {
+              var parentElement = _this.selectorContainer_.parentElement;
+              if (parentElement !== null) {
+                parentElement.removeChild(_this.selectorContainer_);
+                parentElement.removeChild(_this.orText_);
+              }
+            }
+          })(_this)
+      }
+    )[0];
+    this.selectorContainer_.appendChild(this.removeButton_);
+  }
+
+  /**
+   * Adds this RestrictionSelector to a parent container
+   *
+   * @param parentContainer [HTML elem] The container to which to add this
+   *    RestrictionSelector
+   */
+  addToContainer(parentContainer) {
+
+    if (parentContainer.hasChildNodes()) {
+
+      // Separate different RestrictionSelectors with "OR" to clarify that
+      // the people who can see the event only need to satisfy at least one
+      // of the restrictions.
+      parentContainer.appendChild(this.orText_);
+    } else {
+
+      // The first RestrictionSelector to be added cannot be removed. There
+      // needs to be at least one restriction.
+      this.selectorContainer_.removeChild(this.removeButton_);
+    }
+    parentContainer.appendChild(this.selectorContainer_);
+  }
+}
+
+RestrictionSelector.RESTRICTION_ANYONE = "Anyone";
+RestrictionSelector.RESTRICTION_GROUP = "Anyone belonging to this group";
+RestrictionSelector.RESTRICTION_FRIEND = "Anyone who is my friend";
+RestrictionSelector.RESTRICTION_FRIEND_GROUP =
+  "Anyone who is a friend in this group";
+RestrictionSelector.RESTRICTIONS = [
+  RestrictionSelector.RESTRICTION_ANYONE,
+  RestrictionSelector.RESTRICTION_GROUP,
+  RestrictionSelector.RESTRICTION_FRIEND,
+  RestrictionSelector.RESTRICTION_FRIEND_GROUP
+];
+
+/**
+ * Manages the page for setting up an event to share.
+ */
 class ShareManager {
 
   constructor() {
     // The event selector list
     this.eventList_ = document.querySelector(".event-list");
+
+    // The "who can see your event?" list of restrictions
+    this.restrictionsList_ = document.querySelector(".restrictions-list");
   }
 
   /**
@@ -16,7 +123,6 @@ class ShareManager {
    *    from Facebook.
    */
   addEvent(eventData) {
-    console.log(eventData);
     var eventUrl = FB_MGR.buildUrl("/events/" + eventData.id);
     var newEventDiv = $("<div>",
       {
@@ -46,7 +152,6 @@ class ShareManager {
       (function(imgToUpdate) {
         return function(pictureData) {
           imgToUpdate.src = pictureData.data.url;
-          console.log(imgToUpdate.src);
         }
       })(eventPictureElement)
     );
@@ -71,13 +176,34 @@ class ShareManager {
       }
     );
   }
+
+  /**
+   * Loads the panel in which the user can specify who can see their event.
+   */
+  loadRestrictions() {
+    while (this.restrictionsList_.hasChildNodes()) {
+      this.restrictionsList_.removeChild(this.restrictionsList_.lastChild);
+    }
+    this.addRestrictionSelector();
+  }
+
+  /**
+   * Adds another restriction to the list of restrictions.
+   */
+  addRestrictionSelector() {
+    var selector = new RestrictionSelector();
+    selector.addToContainer(this.restrictionsList_);
+  }
 }
 
+// Need to wait until FB is initialized because we need to query FB to load
+// all the events the user can choose to share.
 var SHARE_MGR = new ShareManager();
 $(document).ready(function() {
   FB_MGR.deferUntilConnected(
     function() {
       SHARE_MGR.loadEvents();
+      SHARE_MGR.loadRestrictions();
     }
   );
 });
