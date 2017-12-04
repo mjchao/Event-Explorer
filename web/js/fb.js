@@ -64,6 +64,16 @@ class FbManager {
   }
 
   /**
+   * Builds the URL to a given facebook page.
+   *
+   * @param {string} route A route on the Facebook website to hit, e.g.
+   *    /events/123456
+   */
+  buildUrl(route) {
+    return "https://www.facebook.com" + route;
+  }
+
+  /**
    * Gets the user's created events for sharing.
    *
    * @param {function} callback Callback that will receive the events when they
@@ -86,12 +96,31 @@ class FbManager {
   /**
    * Gets the data for a specific event.
    *
-   * @param {string} eventId The facebook Event ID.
-   * @param {function} callback The callback to execute wtih the event data.
+   * @param {string} eventId The facebook event ID.
+   * @param {function} callback The callback to execute with the event data.
    */
   getEvent(eventId, callback) {
     FB.api(
       "/" + eventId,
+      "get",
+      {
+        "access_token": this.fbToken.accessToken
+      },
+      function(response) {
+        callback(response);
+      }
+    );
+  }
+
+  /**
+   * Gets the cover picture for a specific event.
+   *
+   * @param {string} eventId The facebook event ID.
+   * @param {function} callback The callback to execute with the event data.
+   */
+  getEventPicture(eventId, callback) {
+    FB.api(
+      "/" + eventId + "/picture",
       "get",
       {
         "access_token": this.fbToken.accessToken
