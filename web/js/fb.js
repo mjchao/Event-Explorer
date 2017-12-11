@@ -60,7 +60,9 @@ class FbManager {
    * @return {bool} If the user is logged into facebook already.
    */
   isLoggedIn() {
-    return this.fbToken !== null && this.fbToken.expiresIn > 0;
+    return this.fbToken !== undefined &&
+      this.fbToken !== null &&
+      this.fbToken.expiresIn > 0;
   }
 
   /**
@@ -134,6 +136,39 @@ class FbManager {
 
 var FB_MGR = new FbManager();
 
+/**
+ * Verifies the FB Manager's saved access token if it exists. If access token
+ * is not valid (i.e. expired session or tampered by with user), it is cleared.
+ */
+function verifyFbMgrSavedToken() {
+  if (FB_MGR.fbToken === null ||
+      FB_MGR.fbToken.accessToken === null) {
+    FB_MGR.runDeferredFunctions();
+    return;
+  }
+
+  // check if token is expired
+  FB.api(
+    "/me",
+    "get",
+    {
+      "access_token": FB_MGR.fbToken.accessToken
+    },
+    function(response) {
+      console.log(response);
+      if (response.error !== undefined) {
+        FB_MGR.fbToken = undefined;
+        window.localStorage.removeItem("fbToken");
+      }
+
+      // Deferred functions may depend on the appropriate login state of
+      // FB_MGR. We need to check the token to determine the appropriate
+      // logged-in state before running any deferred functions.
+      FB_MGR.runDeferredFunctions();
+    }
+  );
+}
+
 window.fbAsyncInit = function() {
   FB.init({
     appId      : '507641596259132',
@@ -141,7 +176,7 @@ window.fbAsyncInit = function() {
     version    : 'v2.11'
   });
   FB.AppEvents.logPageView();
-  FB_MGR.runDeferredFunctions();
+  verifyFbMgrSavedToken();
 };
 
 (function(d, s, id){

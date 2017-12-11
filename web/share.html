@@ -3,11 +3,14 @@
   <head>
     <title>Share Event - S'up</title>
 
+    <link rel="stylesheet" type="text/css" media="screen" href="css/share.css">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+    <script src="https://www.w3schools.com/lib/w3.js"></script>
   </head>
   <body>
+    <div w3-include-html="login.html"></div>
     <section class="main">
       <form>
         Choose Event:<br>
@@ -42,5 +45,8 @@
     </section>
   </body>
 
+  <script>
+    w3.includeHTML();
+  </script>
   <script src="js/share.js"></script>
 </html>

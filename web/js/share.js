@@ -1,6 +1,7 @@
 "use strict";
 
 $.getScript("js/fb.js");
+$.getScript("js/login.js");
 
 /**
  * Manages interactions with one dropdown box for selecting a restriction
@@ -103,6 +104,13 @@ RestrictionSelector.RESTRICTIONS = [
   RestrictionSelector.RESTRICTION_FRIEND_GROUP
 ];
 
+class EventDisplay {
+
+  constructor(eventData) {
+
+  }
+}
+
 /**
  * Manages the page for setting up an event to share.
  */
@@ -202,8 +210,14 @@ var SHARE_MGR = new ShareManager();
 $(document).ready(function() {
   FB_MGR.deferUntilConnected(
     function() {
-      SHARE_MGR.loadEvents();
-      SHARE_MGR.loadRestrictions();
+      if (FB_MGR.isLoggedIn()) {
+        SHARE_MGR.loadEvents();
+        SHARE_MGR.loadRestrictions();
+        console.log(FB_MGR.fbToken);
+      }
+      else {
+        LOGIN_MGR.requestLogin("share.html");
+      }
     }
   );
 });
