@@ -104,10 +104,57 @@ RestrictionSelector.RESTRICTIONS = [
   RestrictionSelector.RESTRICTION_FRIEND_GROUP
 ];
 
+/**
+ * Manages interactions with one event in the list of events.
+ */
 class EventDisplay {
 
+  /**
+   * @param eventData [JSON object] Response returned by FB with data about
+   *    an event.
+   */
   constructor(eventData) {
+    var eventUrl = FB_MGR.buildUrl("/events/" + eventData.id);
+    this.eventDiv = $("<div>",
+      {
+        "class": "event",
+        "onclick": "window.open('" + eventUrl + "', '_blank')"
+      }
+    )[0];
 
+    this.eventTitle = $("<h3>",
+      {
+        "class": "event-title",
+        "text": eventData.name
+      }
+    )[0];
+    this.eventDiv.appendChild(this.eventTitle);
+
+    this.eventPicture = $("<img>",
+      {
+        "class": "event-picture",
+        "src": ""
+      }
+    )[0];
+    this.eventDiv.appendChild(this.eventPicture);
+
+    FB_MGR.getEventPicture(eventData.id,
+      (function(eventPicture) {
+        return function(pictureData) {
+          eventPicture.src = pictureData.data.url;
+        }
+      })(this.eventPicture)
+    );
+  }
+
+  /**
+   * Adds this RestrictionSelector to a parent container
+   *
+   * @param parentContainer [HTML elem] The container to which to add this
+   *    RestrictionSelector
+   */
+  addToContainer(parentContainer) {
+    parentContainer.appendChild(this.eventDiv);
   }
 }
 
@@ -131,42 +178,8 @@ class ShareManager {
    *    from Facebook.
    */
   addEvent(eventData) {
-    var eventUrl = FB_MGR.buildUrl("/events/" + eventData.id);
-    var newEventDiv = $("<div>",
-      {
-        "class": "event",
-        "onclick": "window.open('" + eventUrl + "', '_blank')",
-      }
-    )[0];
-
-    // Load the title of the event.
-    var eventTitleElement = $("<h3>",
-      {
-        "class": "event-title",
-        "text": eventData.name
-      }
-    )[0];
-    newEventDiv.appendChild(eventTitleElement);
-
-    // Load the picture of the event.
-    var eventPictureElement = $("<img>",
-      {
-        "class": "event-cover",
-        "src": ""
-      }
-    )[0];
-
-    FB_MGR.getEventPicture(eventData.id,
-      (function(imgToUpdate) {
-        return function(pictureData) {
-          imgToUpdate.src = pictureData.data.url;
-        }
-      })(eventPictureElement)
-    );
-    newEventDiv.appendChild(eventPictureElement);
-
-    // Add all the event data to the event list.
-    this.eventList_.appendChild(newEventDiv);
+    var newEvent = new EventDisplay(eventData);
+    newEvent.addToContainer(this.eventList_);
   }
 
   /**
