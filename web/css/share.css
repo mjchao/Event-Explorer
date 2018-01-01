@@ -1,15 +1,35 @@
 @import "general.css";
 
+section.main {
+  margin: 1em;
+}
+
 div.event {
   cursor: pointer;
+  padding: 1em;
+  border: 2px solid transparent;
 }
 
 div.event:hover {
-  background-color: gray;
+  background-color: #87ceeb;
+  border: 2px solid blue;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  box-shadow: 2px 2px 2px #888888;
 }
 
 div.event.selected {
-  background-color: white;
+  border: 2px solid black;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  box-shadow: 2px 2px 2px #888888;
+  background-color: lightblue;
+}
+
+div.event h3 {
+  cursor: pointer;
 }
 
 div.event img {
@@ -23,6 +43,6 @@ div.event img.missing-cover-img {
   content:url("../images/missing_cover.png");
 }
 
-div.event h3 {
-  cursor: pointer;
+div.event .btn.event-link {
+  margin-left: 5em;
 }

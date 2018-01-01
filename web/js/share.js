@@ -199,11 +199,27 @@ class EventDisplay {
           if (pictureData.cover !== undefined ) {
             eventPicture.src = pictureData.cover.source;
           } else {
-            eventPicture.className += " missing-cover-img";
+            eventPicture.classList.add("missing-cover-img");
           }
         }
       })(this.eventPicture_)
     );
+
+    this.eventLink_ = $("<a>",
+      {
+        "class": "btn event-link",
+        "text": "View on Facebook",
+        "click": function(e) {
+            // Don't trigger the parent div's click that will cause this
+            // event to be selected. If the user wants to view the event on
+            // Facebook, they probably aren't sure they want to select the
+            // event yet.
+            e.stopPropagation();
+          },
+        "onclick": "window.open('" + eventUrl + "', '_blank')"
+      }
+    )[0];
+    this.eventDiv_.appendChild(this.eventLink_);
   }
 
   /**
