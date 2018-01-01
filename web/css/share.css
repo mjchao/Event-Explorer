@@ -1,1 +1,28 @@
-@import url(general.css)
+@import "general.css";
+
+div.event {
+  cursor: pointer;
+}
+
+div.event:hover {
+  background-color: gray;
+}
+
+div.event.selected {
+  background-color: white;
+}
+
+div.event img {
+  cursor: pointer;
+  max-width: 20em;
+  max-height: 20em;
+  object-fit: scale-down;
+}
+
+div.event img.missing-cover-img {
+  content:url("../images/missing_cover.png");
+}
+
+div.event h3 {
+  cursor: pointer;
+}

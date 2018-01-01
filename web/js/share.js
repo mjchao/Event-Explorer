@@ -105,6 +105,54 @@ RestrictionSelector.RESTRICTIONS = [
 ];
 
 /**
+ * Represents the list of Events that the user can choose to share.
+ */
+class EventList {
+
+  /**
+   * Creates an empty EventList component.
+   */
+  constructor() {
+    this.listDiv_ = $("<div>",
+      {
+        "class": "event-list"
+      }
+    )[0];
+    this.eventDisplays_ = [];
+  }
+
+  /**
+   * Adds this EventList to a parent container
+   *
+   * @param parentContainer [HTML elem] The container to which to add this
+   *    EventList
+   */
+  addToContainer(parentContainer) {
+    parentContainer.appendChild(this.listDiv_);
+  }
+
+  /**
+   * Adds the given EventDisplay to this EventList
+   *
+   * @param eventDisplay [EventDisplay] The EventDisplay to add
+   */
+  addEventDisplay(eventDisplay) {
+    this.eventDisplays_.push(eventDisplay);
+    this.listDiv_.appendChild(eventDisplay.eventDiv_);
+    eventDisplay.parentEventList_ = this;
+  }
+
+  /**
+   * Unselects all the EventDisplays that are contained in this EventList
+   */
+  unselectAll() {
+    for(var i = 0; i < this.eventDisplays_.length; ++i) {
+      this.eventDisplays_[i].setSelected(false);
+    }
+  }
+}
+
+/**
  * Manages interactions with one event in the list of events.
  */
 class EventDisplay {
@@ -114,47 +162,62 @@ class EventDisplay {
    *    an event.
    */
   constructor(eventData) {
+    var _this = this;
     var eventUrl = FB_MGR.buildUrl("/events/" + eventData.id);
-    this.eventDiv = $("<div>",
+    this.eventDiv_ = $("<div>",
       {
         "class": "event",
-        "onclick": "window.open('" + eventUrl + "', '_blank')"
+        "click":
+          (function(_this) {
+            return function() {
+              _this.setSelected(true);
+            }
+          })(_this),
+        //"onclick": "window.open('" + eventUrl + "', '_blank')",
       }
     )[0];
 
-    this.eventTitle = $("<h3>",
+    this.eventTitle_ = $("<h3>",
       {
         "class": "event-title",
-        "text": eventData.name
+        "text": eventData.name,
       }
     )[0];
-    this.eventDiv.appendChild(this.eventTitle);
+    this.eventDiv_.appendChild(this.eventTitle_);
 
-    this.eventPicture = $("<img>",
+    this.eventPicture_ = $("<img>",
       {
         "class": "event-picture",
-        "src": ""
+        "src": "",
       }
     )[0];
-    this.eventDiv.appendChild(this.eventPicture);
+    this.eventDiv_.appendChild(this.eventPicture_);
 
     FB_MGR.getEventPicture(eventData.id,
       (function(eventPicture) {
         return function(pictureData) {
-          eventPicture.src = pictureData.data.url;
+          if (pictureData.cover !== undefined ) {
+            eventPicture.src = pictureData.cover.source;
+          } else {
+            eventPicture.className += " missing-cover-img";
+          }
         }
-      })(this.eventPicture)
+      })(this.eventPicture_)
     );
   }
 
   /**
-   * Adds this RestrictionSelector to a parent container
+   * Indicate whether or not this event has been selected by the user.
    *
-   * @param parentContainer [HTML elem] The container to which to add this
-   *    RestrictionSelector
+   * @param selected [bool] If this event has been selected by the user.
    */
-  addToContainer(parentContainer) {
-    parentContainer.appendChild(this.eventDiv);
+  setSelected(selected) {
+    if (selected == true ) {
+      this.parentEventList_.unselectAll();
+      this.eventDiv_.classList.add("selected");
+    } else {
+      this.eventDiv_.classList.remove("selected");
+    }
   }
 }
 
@@ -164,8 +227,11 @@ class EventDisplay {
 class ShareManager {
 
   constructor() {
+    this.shareForm_ = document.querySelector(".select-event");
+
     // The event selector list
-    this.eventList_ = document.querySelector(".event-list");
+    this.eventList_ = new EventList();
+    this.eventList_.addToContainer(this.shareForm_);
 
     // The "who can see your event?" list of restrictions
     this.restrictionsList_ = document.querySelector(".restrictions-list");
@@ -179,16 +245,13 @@ class ShareManager {
    */
   addEvent(eventData) {
     var newEvent = new EventDisplay(eventData);
-    newEvent.addToContainer(this.eventList_);
+    this.eventList_.addEventDisplay(newEvent);
   }
 
   /**
    * Load all of this user's events.
    */
   loadEvents() {
-    while (this.eventList_.hasChildNodes()) {
-      this.eventList_.removeChild(this.eventList_.lastChild);
-    }
     FB_MGR.getUserEvents(
       function(events) {
         for (var i = 0; i < events.data.length; ++i) {
@@ -226,7 +289,6 @@ $(document).ready(function() {
       if (FB_MGR.isLoggedIn()) {
         SHARE_MGR.loadEvents();
         SHARE_MGR.loadRestrictions();
-        console.log(FB_MGR.fbToken);
       }
       else {
         LOGIN_MGR.requestLogin("share.html");

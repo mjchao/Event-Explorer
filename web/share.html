@@ -3,32 +3,32 @@
   <head>
     <title>Share Event - S'up</title>
 
-    <link rel="stylesheet" type="text/css" media="screen" href="css/share.css">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
     <script src="https://www.w3schools.com/lib/w3.js"></script>
+
+    <link rel="stylesheet" type="text/css" media="screen" href="css/share.css">
   </head>
   <body>
     <div w3-include-html="login.html"></div>
     <section class="main">
       <form>
-        Choose Event:<br>
-        <div class="event-list list-group">
-          <a href="#" class="list-group-item">
-            Event 1
-          </a>
-          <a href="#" class="list-group-item">
-            Event 2
-          </a>
+        <h2 class="choose-event-heading">Choose An Event to Share:</h2>
+        <div class="select-event">
+          <!-- Events will be created dynamically via Javascript -->
         </div>
 
-        Who can see your event?
-        <button type="button" class="btn"
-          onclick="SHARE_MGR.addRestrictionSelector()">
-          +
-        </button>
-        <br>
+        <h2 class="restrictions-heading">
+          Who can see your event?
+          <button type="button" class="btn"
+            onclick="SHARE_MGR.addRestrictionSelector()">
+            +
+          </button>
+        </h2>
+        <div class="select-restrictions">
+          <!-- Restrictions will be created dynamically via Javascript -->
+        </div>
 
         <div class="restrictions-list">
           <div class="select-restriction">

@@ -117,15 +117,21 @@ class FbManager {
   /**
    * Gets the cover picture for a specific event.
    *
+   * This does not GET /<eventId>/picture because that picture is always
+   * way too small. Instead, it GETs /<eventId>?fields=cover, which returns
+   * the full-size cover image url. The full-size cover image url can be
+   * accessed with .cover.source
+   *
    * @param {string} eventId The facebook event ID.
    * @param {function} callback The callback to execute with the event data.
    */
   getEventPicture(eventId, callback) {
     FB.api(
-      "/" + eventId + "/picture",
+      "/" + eventId,
       "get",
       {
-        "access_token": this.fbToken.accessToken
+        "access_token": this.fbToken.accessToken,
+        "fields": "cover"
       },
       function(response) {
         callback(response);
@@ -155,7 +161,6 @@ function verifyFbMgrSavedToken() {
       "access_token": FB_MGR.fbToken.accessToken
     },
     function(response) {
-      console.log(response);
       if (response.error !== undefined) {
         FB_MGR.fbToken = undefined;
         window.localStorage.removeItem("fbToken");
