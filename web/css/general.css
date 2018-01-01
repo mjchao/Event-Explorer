@@ -23,7 +23,7 @@ h3 {
   font-family: 'Open Sans', sans-serif;
 }
 
-p, ul, ol {
+p, ul, ol, select {
   font-family: 'Merriweather', serif;
 }
 
@@ -42,5 +42,11 @@ a.btn {
 
 a.btn:hover {
   background-color: rgba(0,0,0,0.2);
+}
+
+select {
+  background-color: gold;
+  border: 1px solid;
+  padding: 5px;
 }
 

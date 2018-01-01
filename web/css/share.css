@@ -48,6 +48,23 @@ div.event .btn.event-link {
   margin-left: 5em;
 }
 
+h2.restrictions-heading {
+  display: inline-block;
+}
+
+a.add-restriction {
+	font-size: 2em;
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
 div.select-restriction {
+  font-weight: bold;
+  margin-left: 1em;
+}
+
+div.select-restriction a.btn {
+  padding-top: 4px;
+  padding-bottom: 4px;
   margin-left: 1em;
 }
