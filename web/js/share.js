@@ -4,20 +4,53 @@ $.getScript("js/fb.js");
 $.getScript("js/login.js");
 
 /**
+ * Represents the list of "Who can see your event?" list of restrictions
+ * that the user has defined.
+ */
+class RestrictionList {
+
+  /**
+   * Creates a RestrictionList.
+   */
+  constructor() {
+    this.listDiv_ = $("<div>",
+      {
+        "class": "restrictions-list"
+      }
+    )[0];
+    this.restrictions_ = [];
+  }
+
+  /**
+   * Adds the graphical representation of this list to a parent container.
+   *
+   * @param parentContainer {HTML elem} The parent container.
+   */
+  addToContainer(parentContainer) {
+    parentContainer.appendChild(this.listDiv_);
+  }
+
+  /**
+   * Adds a restriction selector to this lsit
+   */
+  addRestrictionSelector() {
+    if (this.restrictions_.length == 0) {
+      var newRestriction = new RestrictionSelector(true);
+    } else {
+      var newRestriction = new RestrictionSelector(false);
+    }
+    this.restrictions_.push(newRestriction);
+    this.listDiv_.appendChild(newRestriction.selectorContainer_);
+  }
+}
+
+/**
  * Manages interactions with one dropdown box for selecting a restriction
  * on who can see the event.
  */
 class RestrictionSelector {
 
-  constructor() {
-
-    // "OR" text that is displayed between restrictions to indicate that
-    // restrictions are "OR" - not "AND"
-    this.orText_ = $("<h3>",
-      {
-        "text": "OR"
-      }
-    )[0];
+  constructor(isFirst) {
 
     // Outer div containing everything.
     this.selectorContainer_ = $("<div>",
@@ -25,6 +58,17 @@ class RestrictionSelector {
         "class": "select-restriction"
       }
     )[0];
+
+    if (!isFirst) {
+      // "OR" text that is displayed between restrictions to indicate that
+      // restrictions are "OR" - not "AND"
+      this.orText_ = $("<h3>",
+        {
+          "text": "OR"
+        }
+      )[0];
+      this.selectorContainer_.appendChild(this.orText_);
+    }
 
     // Groups the individual options that the user can pick from.
     this.selectorGroup_ = $("<select>")[0];
@@ -44,51 +88,29 @@ class RestrictionSelector {
 
     var _this = this;
 
-    // Button for removing the restriction
-    this.removeButton_ = $("<button>",
-      {
-        "class": "remove-restriction",
-        "text": "-",
-        "href": "#",
-        "click":
-          // Javascript gets pretty messed up when trying to add an onClick
-          // callback. "this" becomes the button itself, so we need to
-          // pass in a reference to the actual RestrictionSelector object.
-          (function(_this) {
-            return function() {
-              var parentElement = _this.selectorContainer_.parentElement;
-              if (parentElement !== null) {
-                parentElement.removeChild(_this.selectorContainer_);
-                parentElement.removeChild(_this.orText_);
+    if (!isFirst) {
+      // Button for removing the restriction
+      this.removeButton_ = $("<button>",
+        {
+          "class": "remove-restriction",
+          "text": "-",
+          "href": "#",
+          "click":
+            // Javascript gets pretty messed up when trying to add an onClick
+            // callback. "this" becomes the button itself, so we need to
+            // pass in a reference to the actual RestrictionSelector object.
+            (function(_this) {
+              return function() {
+                var parentElement = _this.selectorContainer_.parentElement;
+                if (parentElement !== null) {
+                  parentElement.removeChild(_this.selectorContainer_);
+                }
               }
-            }
-          })(_this)
-      }
-    )[0];
-    this.selectorContainer_.appendChild(this.removeButton_);
-  }
-
-  /**
-   * Adds this RestrictionSelector to a parent container
-   *
-   * @param parentContainer [HTML elem] The container to which to add this
-   *    RestrictionSelector
-   */
-  addToContainer(parentContainer) {
-
-    if (parentContainer.hasChildNodes()) {
-
-      // Separate different RestrictionSelectors with "OR" to clarify that
-      // the people who can see the event only need to satisfy at least one
-      // of the restrictions.
-      parentContainer.appendChild(this.orText_);
-    } else {
-
-      // The first RestrictionSelector to be added cannot be removed. There
-      // needs to be at least one restriction.
-      this.selectorContainer_.removeChild(this.removeButton_);
+            })(_this)
+        }
+      )[0];
+      this.selectorContainer_.appendChild(this.removeButton_);
     }
-    parentContainer.appendChild(this.selectorContainer_);
   }
 }
 
@@ -124,7 +146,7 @@ class EventList {
   /**
    * Adds this EventList to a parent container
    *
-   * @param parentContainer [HTML elem] The container to which to add this
+   * @param parentContainer {HTML elem} The container to which to add this
    *    EventList
    */
   addToContainer(parentContainer) {
@@ -134,12 +156,13 @@ class EventList {
   /**
    * Adds the given EventDisplay to this EventList
    *
-   * @param eventDisplay [EventDisplay] The EventDisplay to add
+   * @param eventDisplay [object] The event's data returned by Facebook.
    */
-  addEventDisplay(eventDisplay) {
-    this.eventDisplays_.push(eventDisplay);
-    this.listDiv_.appendChild(eventDisplay.eventDiv_);
-    eventDisplay.parentEventList_ = this;
+  addEventDisplay(eventData) {
+    var newEvent = new EventDisplay(eventData);
+    this.eventDisplays_.push(newEvent);
+    this.listDiv_.appendChild(newEvent.eventDiv_);
+    newEvent.parentEventList_ = this;
   }
 
   /**
@@ -243,14 +266,16 @@ class EventDisplay {
 class ShareManager {
 
   constructor() {
-    this.shareForm_ = document.querySelector(".select-event");
+    this.selectEventDiv_ = document.querySelector(".select-event");
 
     // The event selector list
     this.eventList_ = new EventList();
-    this.eventList_.addToContainer(this.shareForm_);
+    this.eventList_.addToContainer(this.selectEventDiv_);
 
     // The "who can see your event?" list of restrictions
-    this.restrictionsList_ = document.querySelector(".restrictions-list");
+    this.setRestrictionsDiv_ = document.querySelector(".set-restrictions");
+    this.restrictionList_ = new RestrictionList();
+    this.restrictionList_.addToContainer(this.setRestrictionsDiv_);
   }
 
   /**
@@ -260,8 +285,7 @@ class ShareManager {
    *    from Facebook.
    */
   addEvent(eventData) {
-    var newEvent = new EventDisplay(eventData);
-    this.eventList_.addEventDisplay(newEvent);
+    this.eventList_.addEventDisplay(eventData);
   }
 
   /**
@@ -281,18 +305,11 @@ class ShareManager {
    * Loads the panel in which the user can specify who can see their event.
    */
   loadRestrictions() {
-    while (this.restrictionsList_.hasChildNodes()) {
-      this.restrictionsList_.removeChild(this.restrictionsList_.lastChild);
-    }
     this.addRestrictionSelector();
   }
 
-  /**
-   * Adds another restriction to the list of restrictions.
-   */
   addRestrictionSelector() {
-    var selector = new RestrictionSelector();
-    selector.addToContainer(this.restrictionsList_);
+    this.restrictionList_.addRestrictionSelector();
   }
 }
 

@@ -4,6 +4,10 @@ section.main {
   margin: 1em;
 }
 
+div.select-event {
+  margin-left: 1em;
+}
+
 div.event {
   cursor: pointer;
   padding: 1em;
@@ -42,4 +46,8 @@ div.event img.missing-cover-img {
 
 div.event .btn.event-link {
   margin-left: 5em;
+}
+
+div.select-restriction {
+  margin-left: 1em;
 }
