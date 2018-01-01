@@ -13,26 +13,24 @@
   <body>
     <div w3-include-html="login.html"></div>
     <section class="main">
-      <form>
-        <h2 class="choose-event-heading">Choose An Event to Share:</h2>
-        <div class="select-event">
-          <!-- Events will be created dynamically via Javascript -->
-        </div>
+      <h2 class="choose-event-heading">Choose An Event to Share:</h2>
+      <div class="select-event">
+        <!-- Events will be created dynamically via Javascript -->
+      </div>
 
-        <h2 class="restrictions-heading">
-          Who can see your event?
-          <button type="button"
-            onclick="SHARE_MGR.addRestrictionSelector()">
-            +
-          </button>
-        </h2>
-        <div class="set-restrictions">
-          <!-- Restrictions will be created dynamically via Javascript -->
-        </div>
-        <h2>
-          <input type="submit" value="Share">
-        </h2>
-      </form>
+      <h2 class="restrictions-heading">
+        Who can see your event?
+        <button type="button"
+          onclick="SHARE_MGR.addRestrictionSelector()">
+          +
+        </button>
+      </h2>
+      <div class="set-restrictions">
+        <!-- Restrictions will be created dynamically via Javascript -->
+      </div>
+      <h2>
+        <a class="btn">Share</a>
+      </h2>
     </section>
   </body>
 

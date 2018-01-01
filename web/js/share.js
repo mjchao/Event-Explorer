@@ -4,129 +4,6 @@ $.getScript("js/fb.js");
 $.getScript("js/login.js");
 
 /**
- * Represents the list of "Who can see your event?" list of restrictions
- * that the user has defined.
- */
-class RestrictionList {
-
-  /**
-   * Creates a RestrictionList.
-   */
-  constructor() {
-    this.listDiv_ = $("<div>",
-      {
-        "class": "restrictions-list"
-      }
-    )[0];
-    this.restrictions_ = [];
-  }
-
-  /**
-   * Adds the graphical representation of this list to a parent container.
-   *
-   * @param parentContainer {HTML elem} The parent container.
-   */
-  addToContainer(parentContainer) {
-    parentContainer.appendChild(this.listDiv_);
-  }
-
-  /**
-   * Adds a restriction selector to this lsit
-   */
-  addRestrictionSelector() {
-    if (this.restrictions_.length == 0) {
-      var newRestriction = new RestrictionSelector(true);
-    } else {
-      var newRestriction = new RestrictionSelector(false);
-    }
-    this.restrictions_.push(newRestriction);
-    this.listDiv_.appendChild(newRestriction.selectorContainer_);
-  }
-}
-
-/**
- * Manages interactions with one dropdown box for selecting a restriction
- * on who can see the event.
- */
-class RestrictionSelector {
-
-  constructor(isFirst) {
-
-    // Outer div containing everything.
-    this.selectorContainer_ = $("<div>",
-      {
-        "class": "select-restriction"
-      }
-    )[0];
-
-    if (!isFirst) {
-      // "OR" text that is displayed between restrictions to indicate that
-      // restrictions are "OR" - not "AND"
-      this.orText_ = $("<h3>",
-        {
-          "text": "OR"
-        }
-      )[0];
-      this.selectorContainer_.appendChild(this.orText_);
-    }
-
-    // Groups the individual options that the user can pick from.
-    this.selectorGroup_ = $("<select>")[0];
-    this.selectorContainer_.appendChild(this.selectorGroup_);
-
-    // List containing all the individual options the user can pick from.
-    this.restrictOptions_ = []
-    for (var i = 0; i < RestrictionSelector.RESTRICTIONS.length; ++i) {
-      var newOption = $("<option>",
-        {
-          "text": RestrictionSelector.RESTRICTIONS[i]
-        }
-      )[0];
-      this.restrictOptions_.push(newOption);
-      this.selectorGroup_.appendChild(newOption);
-    }
-
-    var _this = this;
-
-    if (!isFirst) {
-      // Button for removing the restriction
-      this.removeButton_ = $("<button>",
-        {
-          "class": "remove-restriction",
-          "text": "-",
-          "href": "#",
-          "click":
-            // Javascript gets pretty messed up when trying to add an onClick
-            // callback. "this" becomes the button itself, so we need to
-            // pass in a reference to the actual RestrictionSelector object.
-            (function(_this) {
-              return function() {
-                var parentElement = _this.selectorContainer_.parentElement;
-                if (parentElement !== null) {
-                  parentElement.removeChild(_this.selectorContainer_);
-                }
-              }
-            })(_this)
-        }
-      )[0];
-      this.selectorContainer_.appendChild(this.removeButton_);
-    }
-  }
-}
-
-RestrictionSelector.RESTRICTION_ANYONE = "Anyone";
-RestrictionSelector.RESTRICTION_GROUP = "Anyone belonging to this group";
-RestrictionSelector.RESTRICTION_FRIEND = "Anyone who is my friend";
-RestrictionSelector.RESTRICTION_FRIEND_GROUP =
-  "Anyone who is a friend in this group";
-RestrictionSelector.RESTRICTIONS = [
-  RestrictionSelector.RESTRICTION_ANYONE,
-  RestrictionSelector.RESTRICTION_GROUP,
-  RestrictionSelector.RESTRICTION_FRIEND,
-  RestrictionSelector.RESTRICTION_FRIEND_GROUP
-];
-
-/**
  * Represents the list of Events that the user can choose to share.
  */
 class EventList {
@@ -259,6 +136,129 @@ class EventDisplay {
     }
   }
 }
+
+/**
+ * Represents the list of "Who can see your event?" list of restrictions
+ * that the user has defined.
+ */
+class RestrictionList {
+
+  /**
+   * Creates a RestrictionList.
+   */
+  constructor() {
+    this.listDiv_ = $("<div>",
+      {
+        "class": "restrictions-list"
+      }
+    )[0];
+    this.restrictions_ = [];
+  }
+
+  /**
+   * Adds the graphical representation of this list to a parent container.
+   *
+   * @param parentContainer {HTML elem} The parent container.
+   */
+  addToContainer(parentContainer) {
+    parentContainer.appendChild(this.listDiv_);
+  }
+
+  /**
+   * Adds a restriction selector to this lsit
+   */
+  addRestrictionSelector() {
+    if (this.restrictions_.length == 0) {
+      var newRestriction = new RestrictionSelector(true);
+    } else {
+      var newRestriction = new RestrictionSelector(false);
+    }
+    this.restrictions_.push(newRestriction);
+    this.listDiv_.appendChild(newRestriction.selectorContainer_);
+  }
+}
+
+/**
+ * Manages interactions with one dropdown box for selecting a restriction
+ * on who can see the event.
+ */
+class RestrictionSelector {
+
+  constructor(isFirst) {
+
+    // Outer div containing everything.
+    this.selectorContainer_ = $("<div>",
+      {
+        "class": "select-restriction"
+      }
+    )[0];
+
+    if (!isFirst) {
+      // "OR" text that is displayed between restrictions to indicate that
+      // restrictions are "OR" - not "AND"
+      this.orText_ = $("<h3>",
+        {
+          "text": "OR"
+        }
+      )[0];
+      this.selectorContainer_.appendChild(this.orText_);
+    }
+
+    // Groups the individual options that the user can pick from.
+    this.selectorGroup_ = $("<select>")[0];
+    this.selectorContainer_.appendChild(this.selectorGroup_);
+
+    // List containing all the individual options the user can pick from.
+    this.restrictOptions_ = []
+    for (var i = 0; i < RestrictionSelector.RESTRICTIONS.length; ++i) {
+      var newOption = $("<option>",
+        {
+          "text": RestrictionSelector.RESTRICTIONS[i]
+        }
+      )[0];
+      this.restrictOptions_.push(newOption);
+      this.selectorGroup_.appendChild(newOption);
+    }
+
+    var _this = this;
+
+    if (!isFirst) {
+      // Button for removing the restriction
+      this.removeButton_ = $("<button>",
+        {
+          "class": "remove-restriction",
+          "text": "-",
+          "href": "#",
+          "click":
+            // Javascript gets pretty messed up when trying to add an onClick
+            // callback. "this" becomes the button itself, so we need to
+            // pass in a reference to the actual RestrictionSelector object.
+            (function(_this) {
+              return function() {
+                var parentElement = _this.selectorContainer_.parentElement;
+                if (parentElement !== null) {
+                  parentElement.removeChild(_this.selectorContainer_);
+                }
+              }
+            })(_this)
+        }
+      )[0];
+      this.selectorContainer_.appendChild(this.removeButton_);
+    }
+  }
+}
+
+RestrictionSelector.RESTRICTION_ANYONE = "Anyone";
+RestrictionSelector.RESTRICTION_GROUP = "Anyone belonging to this group";
+RestrictionSelector.RESTRICTION_FRIEND = "Anyone who is my friend";
+RestrictionSelector.RESTRICTION_FRIEND_GROUP =
+  "Anyone who is a friend in this group";
+RestrictionSelector.RESTRICTIONS = [
+  RestrictionSelector.RESTRICTION_ANYONE,
+  RestrictionSelector.RESTRICTION_GROUP,
+  RestrictionSelector.RESTRICTION_FRIEND,
+  RestrictionSelector.RESTRICTION_FRIEND_GROUP
+];
 
 /**
  * Manages the page for setting up an event to share.
