@@ -224,9 +224,9 @@ class RestrictionSelector {
 
     if (!isFirst) {
       // Button for removing the restriction
-      this.removeButton_ = $("<button>",
+      this.removeButton_ = $("<a>",
         {
-          "class": "remove-restriction",
+          "class": "btn remove-restriction",
           "text": "-",
           "href": "#",
           "click":
@@ -234,7 +234,8 @@ class RestrictionSelector {
             // callback. "this" becomes the button itself, so we need to
             // pass in a reference to the actual RestrictionSelector object.
             (function(_this) {
-              return function() {
+              return function(e) {
+                e.preventDefault();
                 var parentElement = _this.selectorContainer_.parentElement;
                 if (parentElement !== null) {
                   parentElement.removeChild(_this.selectorContainer_);
@@ -271,6 +272,14 @@ class ShareManager {
     // The event selector list
     this.eventList_ = new EventList();
     this.eventList_.addToContainer(this.selectEventDiv_);
+
+    this.addRestrictionBtn_ = document.querySelector(".add-restriction");
+    this.addRestrictionBtn_.addEventListener("click",
+      function (e) {
+        e.preventDefault();
+        SHARE_MGR.addRestrictionSelector();
+      }
+    );
 
     // The "who can see your event?" list of restrictions
     this.setRestrictionsDiv_ = document.querySelector(".set-restrictions");
