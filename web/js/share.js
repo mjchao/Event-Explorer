@@ -33,7 +33,7 @@ class EventList {
   /**
    * Adds the given EventDisplay to this EventList
    *
-   * @param eventDisplay [object] The event's data returned by Facebook.
+   * @param eventDisplay {object} The event's data returned by Facebook.
    */
   addEventDisplay(eventData) {
     var newEvent = new EventDisplay(eventData);
@@ -58,7 +58,7 @@ class EventList {
 class EventDisplay {
 
   /**
-   * @param eventData [JSON object] Response returned by FB with data about
+   * @param eventData {JSON object} Response returned by FB with data about
    *    an event.
    */
   constructor(eventData) {
@@ -125,7 +125,7 @@ class EventDisplay {
   /**
    * Indicate whether or not this event has been selected by the user.
    *
-   * @param selected [bool] If this event has been selected by the user.
+   * @param selected {bool} If this event has been selected by the user.
    */
   setSelected(selected) {
     if (selected == true ) {
@@ -250,15 +250,10 @@ class RestrictionSelector {
 }
 
 RestrictionSelector.RESTRICTION_ANYONE = "Anyone";
-RestrictionSelector.RESTRICTION_GROUP = "Anyone belonging to this group";
 RestrictionSelector.RESTRICTION_FRIEND = "Anyone who is my friend";
-RestrictionSelector.RESTRICTION_FRIEND_GROUP =
-  "Anyone who is a friend in this group";
 RestrictionSelector.RESTRICTIONS = [
   RestrictionSelector.RESTRICTION_ANYONE,
-  RestrictionSelector.RESTRICTION_GROUP,
   RestrictionSelector.RESTRICTION_FRIEND,
-  RestrictionSelector.RESTRICTION_FRIEND_GROUP
 ];
 
 /**
@@ -267,12 +262,18 @@ RestrictionSelector.RESTRICTIONS = [
 class ShareManager {
 
   constructor() {
-    this.selectEventDiv_ = document.querySelector(".select-event");
+
+    // Banner on which any errors will be displayed
+    this.errorBanner_ = new ErrorBanner();
+    this.errorBanner_.addToContainer(document.querySelector("body"));
 
     // The event selector list
+    this.selectEventDiv_ = document.querySelector(".select-event");
     this.eventList_ = new EventList();
     this.eventList_.addToContainer(this.selectEventDiv_);
 
+    // Button that you can click to add more restrictions to the
+    // "Who can see your event?" list.
     this.addRestrictionBtn_ = document.querySelector(".add-restriction");
     this.addRestrictionBtn_.addEventListener("click",
       function (e) {
@@ -285,13 +286,23 @@ class ShareManager {
     this.setRestrictionsDiv_ = document.querySelector(".set-restrictions");
     this.restrictionList_ = new RestrictionList();
     this.restrictionList_.addToContainer(this.setRestrictionsDiv_);
+
+    // The "Share" button
+    this.shareBtn_ = document.querySelector(".share.btn");
+    this.shareBtn_.addEventListener("click",
+      (function(_this) {
+        return function(e) {
+          _this.share();
+        }
+      }(this))
+    );
   }
 
   /**
    * Adds an event to the list of events that the user can choose from.
    *
-   * @param {object} The event data, e.g. title and time, that was received
-   *    from Facebook.
+   * @param eventData {object} The event data, e.g. title and time, that was
+   *    received from Facebook.
    */
   addEvent(eventData) {
     this.eventList_.addEventDisplay(eventData);
@@ -317,8 +328,19 @@ class ShareManager {
     this.addRestrictionSelector();
   }
 
+  /**
+   * Adds a dropdown from which the user can select a restriction.
+   */
   addRestrictionSelector() {
     this.restrictionList_.addRestrictionSelector();
+  }
+
+  /**
+   * Notifies the backend server of the event the user wishes to share
+   */
+  share() {
+    // TODO transact with backend server
+    this.errorBanner_.showError("Not Implemented Yet");
   }
 }
 

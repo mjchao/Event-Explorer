@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Luckiest+Guy|Open+Sans:400,700|Merriweather');
 @import url(login.css);
 @import url(nav.css);
+@import url(error-banner.css);
 
 body {
   font-size: 16px;
