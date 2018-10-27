@@ -35,8 +35,8 @@ div.event h3 {
 
 div.event img {
   cursor: pointer;
-  max-width: 20em;
-  max-height: 20em;
+  max-width: 300px;
+  max-height: 300px;
   object-fit: scale-down;
 }
 
