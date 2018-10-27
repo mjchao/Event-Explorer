@@ -1,8 +1,8 @@
-section.login.hidden {
+.login.hidden {
   display: none;
 }
 
-section.login {
+.login {
   position: fixed;
   top: 0;
   left: 0;
@@ -13,7 +13,7 @@ section.login {
   background-color: rgba(128,128,128,0.7);
 }
 
-section.login .login-panel {
+.login .login-panel {
   position: relative;
   top: 30%;
   margin: auto;
@@ -23,7 +23,7 @@ section.login .login-panel {
   border: 3px solid gray;
 }
 
-section.login .login-panel .close-login {
+.login .login-panel .close-login {
   position: absolute;
   top: 15px;
   left: 15px;
@@ -32,10 +32,11 @@ section.login .login-panel .close-login {
   font-size: 2em;
 }
 
-section.login .login-panel .close-login:hover {
+.login .login-panel .close-login:hover {
   color: rgba(0,0,0,0.2); 
 }
 
-section.login .login-panel .fb-login-button {
+.login .login-panel .fb-login-button {
+  position: relative;
   top: 40%;
 }
