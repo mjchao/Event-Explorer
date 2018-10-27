@@ -35,7 +35,7 @@ nav ul li:hover {
 
 nav > ul > li {
   float: left;
-  width: 25%;
+  margin: 0 15px 0 0;
 }
 
 nav ul li a {

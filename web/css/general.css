@@ -28,6 +28,10 @@ p, ul, ol, select {
   font-family: 'Merriweather', serif;
 }
 
+.emoji {
+  font-family: "Segoe UI Emoji";
+}
+
 a.btn {
   font-size: 1.2em;
   text-decoration: none;
