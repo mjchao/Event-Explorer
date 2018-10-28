@@ -314,6 +314,21 @@ class ShareManager {
   loadEvents() {
     FB_MGR.getUserEvents(
       function(events) {
+
+        // load events in alphabetical order so it's easier for the user
+        // to find the one s/he is looking for.
+        events.data.sort(function(x, y) {
+          var xName = x.name.toUpperCase();
+          var yName = y.name.toUpperCase();
+          if (x.name < y.name) {
+            return -1;
+          }
+          if (y.name < x.name) {
+            return 1;
+          }
+          return 0;
+        });
+
         for (var i = 0; i < events.data.length; ++i) {
           SHARE_MGR.addEvent(events.data[i]);
         }
